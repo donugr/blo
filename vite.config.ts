@@ -1,25 +1,19 @@
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
-
-export default defineConfig(async ({ mode }) => ({
+import { resolve } from "path";
+export default defineConfig({
   build: {
-    target: ["es2020", "esnext"],
-    outDir: "dist",
     lib: {
-      entry: "src/index.ts",
+      // Could also be a dictionary or array of multiple entry points
+      entry: resolve(__dirname, "src/index.ts"),
       formats: ["es", "cjs"],
-      fileName: (format, entryName) => (
-        format === "es"
-          ? `${entryName}.js`
-          : `${entryName}.${format}.js`
-      ),
+      name: "blo",
+      // the proper extensions will be added
+      fileName: "blo",
     },
-    sourcemap: mode === "production" || "inline",
   },
   optimizeDeps: {
     entries: ["src/index.ts"],
   },
-  plugins: [
-    dts({ insertTypesEntry: true }),
-  ],
-}));
+  plugins: [dts({ insertTypesEntry: true })],
+});
